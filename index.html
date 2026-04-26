@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llantera Pro - Elite Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #000;
+            scroll-behavior: smooth;
+        }
+
+        /* --- VIDEO BACKGROUND SYSTEM --- */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: brightness(1.2) contrast(1.1) saturate(1.3); 
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -9;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.5) 100%);
+            pointer-events: none;
+        }
+
+        /* --- HERO GLOW --- */
+        .hero-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95vw;
+            height: 95vw;
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.3) 0%, rgba(250, 204, 21, 0.05) 40%, transparent 75%);
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(50px);
+        }
+
+        /* --- INTRO ANIMATION --- */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .intro-logo-img {
+            width: 320px; 
+            filter: drop-shadow(0 0 45px rgba(250, 204, 21, 0.9));
+            animation: logo-reveal-lux 2.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes logo-reveal-lux {
+            0% { opacity: 0; transform: scale(0.6); filter: blur(20px); }
+            50% { opacity: 1; transform: scale(1.05); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(1.2); filter: blur(15px); }
+        }
+
+        .fade-out {
+            animation: overlay-hide 0.8s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes overlay-hide {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* --- GLASS DESIGN --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+
+        .service-card, .nav-card, .result-highlight-card, .admin-btn, .login-card, .dashboard-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- BUTTONS --- */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: rotate(30deg);
+            animation: shine-sweep 4s infinite ease-in-out;
+        }
+        @keyframes shine-sweep {
+            0% { left: -100%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        .skew-effect { transform: skewX(-12deg); }
+        .skew-fix { transform: skewX(12deg); }
+        
+        .slider {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            height: 55px;
+            overflow: hidden;
+            position: relative;
+            border-top: 1px solid rgba(250, 204, 21, 0.4);
+            border-bottom: 1px solid rgba(250, 204, 21, 0.4);
+        }
+
+        .slide-track {
+            display: flex;
+            width: calc(250px * 26);
+            animation: scroll 60s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-250px * 13)); }
+        }
+
+        .slide {
+            height: 55px;
+            width: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-name {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            text-shadow: 0 0 12px rgba(255,255,255,0.5);
+        }
+
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            color: #facc15;
+            text-shadow: 0 0 20px rgba(250, 204, 21, 0.8);
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #facc15;
+            box-shadow: 0 0 20px #facc15;
+        }
+
+        /* --- ADMIN MODAL --- */
+        #admin-modal {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        #admin-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .login-card {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(40px);
+            border: 2px solid rgba(250, 204, 21, 0.4);
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(250, 204, 21, 0.2);
+        }
+        .login-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1.25rem;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .login-input:focus {
+            border-color: #facc15;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
+        }
+
+        /* --- DASHBOARD STYLES --- */
+        .dashboard-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .dashboard-container.active {
+            display: block;
+            opacity: 1;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #facc15;
+            padding: 1.5rem;
+        }
+        .table-row:hover {
+            background: rgba(250, 204, 21, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+
+    <!-- VIDEO BACKGROUND -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline poster="https://res.cloudinary.com/dd3tduggc/image/upload/v1777084752/tires_ug9hi3.jpg">
+            <source src="https://drive.google.com/uc?export=download&id=1CJLaPpB9N49R0ixCpBdI4votLtcI_lp7" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
+    <!-- INTRO -->
+    <div id="intro-overlay">
+        <div class="intro-logo-container z-10 text-center">
+            <img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1776994538/logo_sin_fondo_jstefx.png" alt="Logo" class="intro-logo-img">
+            <div class="text-yellow-500 font-black tracking-[0.6em] uppercase text-[11px] mt-8 opacity-0 animate-[pulse_2s_infinite_1.5s]">Elite Performance</div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="admin-modal" class="fixed inset-0 z-[200] items-center justify-center bg-black/90 backdrop-blur-xl px-6">
+        <div class="login-card p-10 md:p-14 skew-effect relative">
+            <button onclick="closeAdmin()" class="absolute top-6 right-6 text-zinc-500 hover:text-yellow-500 transition-colors skew-fix">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <div class="skew-fix text-center">
+                <div class="flex justify-center mb-8">
+                    <img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1776994538/logo_sin_fondo_jstefx.png" alt="Admin Logo" class="h-24">
+                </div>
+                <h2 class="text-yellow-500 font-black italic uppercase text-2xl mb-2 tracking-tighter">Admin Access</h2>
+                <p class="text-zinc-400 text-[10px] uppercase font-bold tracking-[0.3em] mb-10">System Credentials 2026</p>
+                
+                <div id="login-msg" class="hidden mb-6 py-2 px-4 text-[10px] uppercase font-black tracking-widest text-center"></div>
+
+                <form class="space-y-6 text-left" id="admin-login-form">
+                    <div class="relative">
+                        <label class="text-yellow-500 text-[9px] font-black uppercase tracking-widest block mb-2">Username</label>
+                        <input type="text" id="admin-user" class="login-input font-bold" placeholder="Enter username" required>
+                    </div>
+                    <div class="relative">
+                        <label class="text-yellow-500 text-[9px] font-black uppercase tracking-widest block mb-2">Password</label>
+                        <input type="password" id="admin-pass" class="login-input font-bold" placeholder="••••••••" required>
+                    </div>
+                    
+                    <div class="pt-6">
+                        <button type="submit" class="btn-shine w-full bg-yellow-500 text-black font-black py-4 uppercase text-[12px] tracking-[0.3em] hover:bg-white transition-all shadow-[0_0_30px_rgba(250,204,21,0.3)]">
+                            Validate Access
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PUBLIC VIEW CONTENT -->
+    <div id="main-content">
+        <!-- HEADER -->
+        <header class="absolute top-0 left-0 w-full z-50">
+            <div class="max-w-7xl mx-auto px-6 h-56 flex justify-between items-center">
+                <div class="flex items-center cursor-pointer group" onclick="resetSearch()">
+                    <img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1776994538/logo_sin_fondo_jstefx.png" alt="Logo" class="h-40 md:h-52 w-auto object-contain transition-all group-hover:scale-110">
+                </div>
+                
+                <nav class="hidden lg:flex space-x-12 text-[12px] font-black uppercase tracking-[0.25em]">
+                    <a href="javascript:void(0)" onclick="resetSearch()" class="hover:text-yellow-500 transition-all">Home</a>
+                    <a href="#services-section" class="hover:text-yellow-500 transition-all">Services</a>
+                    <a href="#footer-contact" class="hover:text-yellow-500 transition-all">Location</a>
+                </nav>
+
+                <div class="flex items-center gap-4 md:gap-8">
+                    <div class="hidden md:flex flex-col items-end text-right">
+                        <span class="text-yellow-400 font-black text-[11px] tracking-widest uppercase mb-1">Online Support</span>
+                        <span class="text-white font-black text-[10px] tracking-[0.25em] uppercase opacity-90 border-b border-yellow-500/30 pb-1">Se Habla Español</span>
+                    </div>
+
+                    <button onclick="openAdmin()" class="admin-btn p-3.5 md:p-4 skew-effect hover:bg-yellow-500 hover:text-black transition-all group border border-white/20">
+                        <div class="skew-fix flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778z"></path>
+                                <path d="M12 12l.94 4.58 3.52-.76.71 3.42"></path>
+                            </svg>
+                        </div>
+                    </button>
+
+                    <a href="tel:9856296126" class="btn-shine bg-yellow-500 text-black font-black p-4 px-10 skew-effect flex items-center justify-center group shadow-2xl hover:bg-white transition-all">
+                        <div class="skew-fix flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.28-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                <path d="M15 1c3.87 0 7 3.13 7 7" opacity="0.3"></path>
+                                <path d="M15 5c1.1 0 2 .9 2 2" opacity="0.6"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO VIEW -->
+        <div id="home-view" class="block">
+            <main class="relative min-h-screen flex flex-col overflow-hidden pt-56">
+                <div class="hero-glow"></div>
+                <div class="relative z-10 text-center px-6 flex-grow flex flex-col justify-center py-20">
+                    <h1 class="text-white text-6xl md:text-8xl font-black uppercase italic leading-tight mb-4 drop-shadow-[0_0_30px_rgba(0,0,0,0.9)]">
+                        NEW & USED<br><span class="text-yellow-500">TIRES</span>
+                    </h1>
+                    <p class="text-gray-100 text-base md:text-xl max-w-2xl mx-auto mb-10 font-bold drop-shadow-lg">
+                        Precision engineering for your safety. Premium tire solutions in Mandeville, LA.
+                    </p>
+                    <div class="flex justify-center"><a href="#footer-contact" class="btn-shine bg-yellow-500 text-black font-black py-4 px-12 uppercase text-[12px] tracking-[0.3em] skew-effect shadow-2xl hover:bg-white transition-all"><span class="skew-fix">Get Directions</span></a></div>
+                </div>
+
+                <!-- CAROUSEL -->
+                <div class="relative z-20 w-full">
+                    <div class="slider flex items-center"><div class="slide-track" id="brand-track"></div></div>
+                </div>
+
+                <!-- TIRE FINDER -->
+                <div class="relative z-30 w-full bg-black/30 backdrop-blur-3xl border-t border-yellow-500/60 py-10 px-6">
+                    <div class="max-w-6xl mx-auto">
+                        <div class="flex gap-8 mb-8 justify-center lg:justify-start">
+                            <button onclick="switchFinderTab('vehicle')" id="tab-vehicle" class="tab-btn active text-[11px] font-black uppercase tracking-[0.3em]">By Vehicle</button>
+                            <button onclick="switchFinderTab('plate')" id="tab-plate" class="tab-btn text-[11px] font-black uppercase tracking-[0.3em]">By Plate</button>
+                        </div>
+                        <div class="flex flex-col lg:flex-row items-center gap-8">
+                            <div class="flex-shrink-0 text-left border-l-4 border-yellow-500 pl-6">
+                                <h2 class="text-yellow-500 font-black italic uppercase text-2xl leading-none">TIRE FINDER</h2>
+                                <p class="text-white text-[10px] uppercase tracking-[0.4em] opacity-95 mt-2">Precision Database 2026</p>
+                            </div>
+                            <!-- FORM VEHICLE -->
+                            <div id="form-vehicle" class="grid grid-cols-1 sm:grid-cols-3 gap-6 flex-grow w-full">
+                                <select id="search-year" class="bg-black/50 border border-zinc-500 text-white py-4 px-4 outline-none text-sm font-bold rounded-none focus:border-yellow-500 transition-all"></select>
+                                <select id="search-make" class="bg-black/50 border border-zinc-500 text-white py-4 px-4 outline-none text-sm font-bold rounded-none focus:border-yellow-500 transition-all" onchange="updateModels()">
+                                    <option value="" disabled selected>Select Make</option>
+                                </select>
+                                <select id="search-model" class="bg-black/50 border border-zinc-500 text-white py-4 px-4 outline-none text-sm font-bold rounded-none focus:border-yellow-500 transition-all">
+                                    <option value="" disabled selected>Model</option>
+                                </select>
+                            </div>
+                            <!-- FORM PLATE -->
+                            <div id="form-plate" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-6 flex-grow w-full">
+                                <input type="text" id="search-plate" placeholder="ABC-1234" class="bg-black/40 border border-zinc-700 text-white py-4 px-4 outline-none text-sm font-bold uppercase placeholder:opacity-50 focus:border-yellow-500 transition-all">
+                                <select id="search-state" class="bg-black/50 border border-zinc-500 text-white py-4 px-4 outline-none text-sm font-bold rounded-none focus:border-yellow-500 transition-all">
+                                    <option value="LA" selected>Louisiana</option><option value="TX">Texas</option><option value="FL">Florida</option><option value="AL">Alabama</option><option value="MS">Mississippi</option>
+                                </select>
+                            </div>
+                            <button onclick="performSearch()" class="btn-shine w-full lg:w-auto bg-yellow-500 text-black font-black py-4 px-12 skew-effect shadow-xl hover:bg-white transition-all"><span class="skew-fix uppercase text-[12px] tracking-widest">Search Stock</span></button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- SERVICES -->
+            <section id="services-section" class="py-32 px-6 relative z-10">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                        <div><h2 class="text-white font-black italic uppercase text-5xl leading-none">Pro <span class="text-yellow-500">Services</span></h2><div class="h-1.5 w-40 bg-yellow-500 mt-4 shadow-xl"></div></div>
+                        <p class="text-yellow-500 text-[11px] uppercase font-black tracking-[0.5em]">High-End Maintenance</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                        <div class="service-card glass-panel p-10 group"><h3 class="text-white font-black uppercase italic text-lg mb-4 group-hover:text-yellow-500 transition-colors">Tire Sales</h3><p class="text-zinc-100 text-[11px] leading-relaxed uppercase font-bold">New and used tires at competitive prices.</p></div>
+                        <div class="service-card glass-panel p-10 group"><h3 class="text-white font-black uppercase italic text-lg mb-4 group-hover:text-yellow-500 transition-colors">Mount & Balance</h3><p class="text-zinc-100 text-[11px] leading-relaxed uppercase font-bold">Professional mounting and balance using precision equipment.</p></div>
+                        <div class="service-card glass-panel p-10 group"><h3 class="text-white font-black uppercase italic text-lg mb-4 group-hover:text-yellow-500 transition-colors">Flat Repair</h3><p class="text-zinc-100 text-[11px] leading-relaxed uppercase font-bold">Quick and professional repair to get you back on the road.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="py-24 px-6 relative z-10" id="footer-contact">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 text-center md:text-left">
+                    <div class="space-y-10"><img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1776994538/logo_sin_fondo_jstefx.png" alt="Logo" class="h-36 mx-auto md:mx-0"><p class="text-zinc-200 text-[11px] uppercase font-black leading-loose">Automotive technology leaders.</p></div>
+                    <div><h4 class="text-white font-black uppercase italic text-xs mb-10 border-l-2 border-yellow-500 pl-5 tracking-[0.2em]">Business Hours</h4><ul class="space-y-4 text-zinc-300 text-[11px] uppercase font-black"><li class="flex justify-between"><span>Mon - Fri:</span> <span class="text-white">8:00 AM - 6:00 PM</span></li><li class="flex justify-between"><span>Saturday:</span> <span class="text-white">8:00 AM - 4:00 PM</span></li></ul></div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- SEARCH RESULTS -->
+        <div id="results-view" class="hidden min-h-screen pt-48 pb-32 px-6 bg-zinc-950/70 backdrop-blur-md text-center relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-12 border-b border-zinc-800 pb-12"><h2 class="text-4xl md:text-5xl font-black text-white italic uppercase leading-tight">Recommended <span class="text-yellow-500">Size</span></h2><p id="search-summary" class="text-zinc-100 font-black uppercase tracking-[0.4em] text-[11px] bg-yellow-500/10 inline-block px-5 py-2 border border-yellow-500/20 mt-4"></p></div>
+                <div id="results-highlight" class="flex justify-center"></div>
+                <div class="mt-16 flex gap-6 justify-center"><a href="tel:9856296126" class="btn-shine bg-yellow-500 text-black font-black py-5 px-12 skew-effect shadow-2xl hover:bg-white transition-all"><span class="skew-fix uppercase text-[14px]">Confirm Stock</span></a><button onclick="resetSearch()" class="border-2 border-zinc-300 text-white py-5 px-12 transition-all uppercase text-[14px] font-black">New Search</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- ADMIN VIEW (PRIVATE) --- -->
+    <div id="admin-view" class="dashboard-container relative z-10 min-h-screen pt-32 px-6">
+        <header class="fixed top-0 left-0 w-full h-24 glass-panel z-[150] flex items-center justify-between px-10">
+            <div class="flex items-center gap-6">
+                <img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1776994538/logo_sin_fondo_jstefx.png" alt="Logo" class="h-16">
+                <h1 class="text-yellow-500 font-black uppercase italic tracking-widest border-l-2 border-white/20 pl-6">Control Panel 2026</h1>
+            </div>
+            <button onclick="logout()" class="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-6 py-2 uppercase font-black text-[10px] transition-all skew-effect">
+                <span class="skew-fix">Logout</span>
+            </button>
+        </header>
+
+        <div class="max-w-7xl mx-auto pt-10 pb-20">
+            <!-- FINANCE SECTION -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="stat-card glass-panel"><p class="text-zinc-400 text-[9px] uppercase font-black tracking-widest mb-1">Weekly Earnings</p><h3 class="text-green-400 text-3xl font-black italic">$4,250.00</h3></div>
+                <div class="stat-card glass-panel border-yellow-500"><p class="text-zinc-400 text-[9px] uppercase font-black tracking-widest mb-1">Monthly Earnings</p><h3 class="text-yellow-500 text-3xl font-black italic">$18,780.00</h3></div>
+                <div class="stat-card glass-panel"><p class="text-zinc-400 text-[9px] uppercase font-black tracking-widest mb-1">Monthly Expenses</p><h3 class="text-red-400 text-3xl font-black italic">$6,400.00</h3></div>
+                <div class="stat-card glass-panel border-white"><p class="text-zinc-400 text-[9px] uppercase font-black tracking-widest mb-1">Yearly Earnings</p><h3 class="text-white text-3xl font-black italic">$145,200.00</h3></div>
+            </div>
+
+            <!-- INVENTORY SECTION -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="glass-panel p-8">
+                    <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4"><h2 class="text-xl font-black uppercase italic text-yellow-500">New Tires</h2><span class="text-[10px] bg-yellow-500 text-black px-3 py-1 font-black uppercase">Elite Inventory</span></div>
+                    <table class="w-full text-left text-[11px] uppercase font-bold">
+                        <thead class="text-zinc-500 border-b border-white/5"><tr><th class="py-3">Size</th><th>Brand</th><th>Stock</th><th>Price</th></tr></thead>
+                        <tbody class="text-white">
+                            <tr class="table-row border-b border-white/5"><td class="py-4">225/45 R17</td><td>Michelin</td><td>12</td><td>$185.00</td></tr>
+                            <tr class="table-row border-b border-white/5"><td class="py-4">215/55 R16</td><td>Bridgestone</td><td>8</td><td>$155.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="glass-panel p-8">
+                    <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4"><h2 class="text-xl font-black uppercase italic text-zinc-300">Used Tires</h2><span class="text-[10px] bg-zinc-700 text-white px-3 py-1 font-black uppercase">Pre-Owned</span></div>
+                    <table class="w-full text-left text-[11px] uppercase font-bold">
+                        <thead class="text-zinc-500 border-b border-white/5"><tr><th class="py-3">Size</th><th>Condition</th><th>Stock</th><th>Price</th></tr></thead>
+                        <tbody class="text-white">
+                            <tr class="table-row border-b border-white/5"><td class="py-4">205/55 R16</td><td>80% Life</td><td>15</td><td>$45.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FULL CAR DATABASE
+        const vehicleData = {
+            "Toyota": ["Corolla", "Camry", "RAV4", "Hilux", "Tacoma", "Highlander", "Prius", "Yaris", "Land Cruiser", "Sienna", "4Runner", "Tundra"],
+            "Ford": ["F-150", "Explorer", "Mustang", "Ranger", "Focus", "Edge", "Escape", "Bronco", "Transit", "Super Duty", "EcoSport"],
+            "Chevrolet": ["Silverado", "Cruze", "Tahoe", "Camaro", "Equinox", "Malibu", "Trax", "Colorado", "Suburban", "Blazer", "Impala"],
+            "Nissan": ["Sentra", "Altima", "Frontier", "Rogue", "Versa", "Pathfinder", "March", "Kicks", "Titan", "Murano", "Maxima", "Armada"],
+            "Honda": ["Civic", "Accord", "CR-V", "Pilot", "Fit", "HR-V", "Odyssey", "Ridgeline", "Passport", "Insight"],
+            "BMW": ["3 Series", "5 Series", "X3", "X5", "X1", "7 Series", "X7", "M3", "M4", "X6", "X4"],
+            "Mercedes-Benz": ["C-Class", "E-Class", "GLC", "GLE", "S-Class", "A-Class", "CLA", "GLA", "GLS", "GLB", "G-Class"],
+            "Audi": ["A3", "A4", "A6", "Q3", "Q5", "Q7", "A5", "Q8", "A7", "A8", "E-tron"],
+            "Jeep": ["Wrangler", "Grand Cherokee", "Gladiator", "Renegade", "Compass", "Cherokee", "Wagoneer"],
+            "Tesla": ["Model 3", "Model Y", "Model S", "Model X", "Cybertruck"],
+            "Volkswagen": ["Jetta", "Golf", "Tiguan", "Atlas", "Passat", "Polo", "Taos", "ID.4", "Beetle"],
+            "Hyundai": ["Elantra", "Tucson", "Santa Fe", "Accent", "Kona", "Ioniq", "Palisade", "Sonata", "Santa Cruz"],
+            "Kia": ["Sportage", "Rio", "Forte", "Sorento", "Stinger", "Seltos", "Soul", "Telluride", "K5", "Carnival"]
+        };
+
+        const sizeSpecs = ["225/45 R17", "215/55 R16", "245/40 R18", "225/50 R17", "205/55 R16", "225/40 R18", "235/60 R18", "265/70 R17", "195/65 R15", "255/35 R19", "275/40 R20"];
+        const brands = ["Michelin", "Bridgestone", "Goodyear", "Pirelli", "Continental", "Dunlop", "Hankook", "Yokohama", "Kumho", "Toyo", "Cooper", "Falken", "Nexen"];
+
+        let currentTab = 'vehicle';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const yearSelect = document.getElementById('search-year');
+            const makeSelect = document.getElementById('search-make');
+            
+            // Populate Years
+            for (let y = 2026; y >= 2000; y--) {
+                const opt = document.createElement('option'); opt.value = y; opt.textContent = y; yearSelect.appendChild(opt);
+            }
+            
+            // Populate Makes
+            Object.keys(vehicleData).sort().forEach(make => {
+                const opt = document.createElement('option'); opt.value = make; opt.textContent = make; makeSelect.appendChild(opt);
+            });
+            
+            // Populate Slide Track
+            const track = document.getElementById('brand-track');
+            [...brands, ...brands].forEach(b => {
+                const div = document.createElement('div'); div.className = 'slide'; div.innerHTML = `<span class="brand-name">${b}</span>`; track.appendChild(div);
+            });
+
+            // Login Handler
+            document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const user = document.getElementById('admin-user').value;
+                const pass = document.getElementById('admin-pass').value;
+                const msgDiv = document.getElementById('login-msg');
+
+                if(user === 'tires-2026' && pass === '54321') {
+                    msgDiv.innerText = "Access Granted. Loading Dashboard...";
+                    msgDiv.className = "mb-6 py-2 px-4 text-[10px] uppercase font-black tracking-widest text-center block bg-green-500/20 text-green-400 border border-green-500/50";
+                    setTimeout(() => {
+                        closeAdmin();
+                        document.getElementById('main-content').style.display = 'none';
+                        document.getElementById('admin-view').classList.add('active');
+                    }, 1500);
+                } else {
+                    msgDiv.innerText = "Invalid Credentials";
+                    msgDiv.className = "mb-6 py-2 px-4 text-[10px] uppercase font-black tracking-widest text-center block bg-red-500/20 text-red-400 border border-red-500/50";
+                    setTimeout(() => msgDiv.classList.add('hidden'), 3000);
+                }
+            });
+        });
+
+        function openAdmin() { document.getElementById('admin-modal').classList.add('show'); document.body.style.overflow = 'hidden'; }
+        function closeAdmin() { document.getElementById('admin-modal').classList.remove('show'); document.body.style.overflow = 'auto'; }
+        
+        function logout() {
+            document.getElementById('admin-view').classList.remove('active');
+            document.getElementById('main-content').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function switchFinderTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-vehicle').classList.toggle('active', tab === 'vehicle');
+            document.getElementById('tab-plate').classList.toggle('active', tab === 'plate');
+            document.getElementById('form-vehicle').classList.toggle('hidden', tab !== 'vehicle');
+            document.getElementById('form-plate').classList.toggle('hidden', tab !== 'plate');
+        }
+
+        function updateModels() {
+            const make = document.getElementById('search-make').value;
+            const modelSelect = document.getElementById('search-model');
+            modelSelect.innerHTML = '<option value="" disabled selected>Model</option>';
+            if (vehicleData[make]) {
+                vehicleData[make].sort().forEach(model => {
+                    const opt = document.createElement('option'); opt.value = model; opt.textContent = model; modelSelect.appendChild(opt);
+                });
+            }
+        }
+
+        function performSearch() {
+            let summaryText = "";
+            let randomSeed = 0;
+
+            if (currentTab === 'vehicle') {
+                const year = document.getElementById('search-year').value;
+                const make = document.getElementById('search-make').value;
+                const model = document.getElementById('search-model').value;
+                if (!make || !model) return;
+                summaryText = `${year} • ${make} • ${model}`;
+                randomSeed = make.length + model.length + parseInt(year);
+            } else {
+                const plate = document.getElementById('search-plate').value;
+                if (!plate) return;
+                summaryText = `Plate: ${plate.toUpperCase()} • LA`;
+                randomSeed = plate.length;
+            }
+
+            document.getElementById('loading-state').classList.remove('hidden');
+
+            setTimeout(() => {
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('home-view').classList.add('hidden');
+                document.getElementById('results-view').classList.remove('hidden');
+                document.getElementById('search-summary').innerText = summaryText;
+                
+                // Pick a size based on search selection
+                const size = sizeSpecs[randomSeed % sizeSpecs.length];
+                
+                document.getElementById('results-highlight').innerHTML = `
+                    <div class="result-highlight-card glass-panel p-16 md:p-24 w-full max-w-2xl relative overflow-hidden group mx-auto">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent"></div>
+                        <div class="relative z-10 text-center">
+                            <span class="text-yellow-500 font-black uppercase tracking-[0.5em] text-[12px] mb-6 block">Verified Fitment</span>
+                            <h3 class="text-white text-6xl md:text-8xl font-black italic tracking-tighter mb-8 group-hover:text-yellow-400 transition-colors duration-500">${size}</h3>
+                            <p class="text-zinc-200 text-[11px] uppercase font-bold tracking-widest max-w-xs mx-auto leading-relaxed">
+                                Standard specification for your ${currentTab === 'vehicle' ? 'selection' : 'vehicle'} based on our 2026 technical database.
+                            </p>
+                        </div>
+                    </div>`;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1800);
+        }
+
+        function resetSearch() {
+            document.getElementById('results-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('intro-overlay').classList.add('fade-out');
+            }, 3000);
+        });
+    </script>
+
+    <!-- LOADING STATE -->
+    <div id="loading-state" class="hidden fixed inset-0 z-[60] bg-black/98 backdrop-blur-xl flex flex-col items-center justify-center text-center px-6">
+        <div class="mb-10 border-t-yellow-500 rounded-full w-12 h-12 animate-spin border-4 border-zinc-800"></div>
+        <p class="text-yellow-500 font-black uppercase tracking-[0.8em] text-[11px] animate-pulse">Syncing Precision Data...</p>
+    </div>
+
+</body>
+</html>
